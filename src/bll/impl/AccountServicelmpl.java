@@ -24,7 +24,7 @@ public class AccountServicelmpl implements AccountService {
     }
 
 
-    public void insertFlight(Account account) {
+    public void insertAccount(Account account) {
         Connection conn = null;
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

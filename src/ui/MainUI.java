@@ -4,10 +4,7 @@ import bean.Account;
 import bll.AccountService;
 import bll.impl.AccountServicelmpl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -16,23 +13,13 @@ public class MainUI {
         Connection conn = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            System.out.println("数据库驱动加载成功");
             String uri = "jdbc:sqlserver://localhost:1433;integratedSecurity=true;DatabaseName=library";
             String user = "sa";
             String password = "123456";
             conn = DriverManager.getConnection(uri, user, password); //连接代码
-            Statement st = conn.createStatement();
-            String sql = "select * from book";
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()){
-                System.out.println(rs.getObject(1)+""+rs.getObject(2));
-            }
-            System.out.println();
-            ;
         } catch (Exception e) {
-            System.out.println("错误");
-            System.out.println(e);
-
+            e.printStackTrace();
+        }
 
             Scanner sc = new Scanner(System.in); // 接受键盘输入
             while (true) {
@@ -41,18 +28,38 @@ public class MainUI {
                 System.out.println("按2，显示所有借阅图书信息");
                 System.out.println("按3，查询借阅信息");
 
-
                 int choice = sc.nextInt();
-
                 if (choice == 1) {
                     System.out.println("请输入图书编号");
-                    String BookNo = sc.next();
-                    System.out.println("请输入读者编号");
-                    String readerNo = sc.next();
-                    System.out.println("请输入借阅时间");
-                    String loanTime = sc.next();
-                    System.out.println("请输入归还时间");
-                    String returnTime = sc.next();
+                    String bookNo = sc.next();
+
+                    try {
+                        Statement st = conn.createStatement(); //创建Statement对象--操作增删改查SQL语句
+                        String sql = "select BookNo from book where BookNo=?" ;//执行一个SQL语句
+                        PreparedStatement pstmt = conn.prepareStatement(sql);
+                        pstmt.setString(1, bookNo);
+                        ResultSet rs = pstmt.executeQuery();
+                        /*String result = "";
+                        while(rs.next()){
+                            result = rs.getString(1);
+                            System.out.println("查询结果：" + rs.getString(1));
+                        }
+                        System.out.println("判断条件："+ rs.next());*/
+                        //判断是否有这本书
+                        if( rs.next()==true){
+                            System.out.println("请输入读者编号");
+                            String readerNo = sc.next();
+                            System.out.println("请输入借阅时间");
+                            String loanTime = sc.next();
+                            System.out.println("请输入归还时间");
+                            String returnTime = sc.next();
+                        }
+                        else
+                            System.out.println("没有这本书！");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } else if (choice == 2) {
                     AccountService accountService = new AccountServicelmpl();
                     Set<Account>allAccount = accountService.getAllAccount();
@@ -69,5 +76,4 @@ public class MainUI {
 
             }
         }
-    }
 }
