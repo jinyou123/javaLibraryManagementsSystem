@@ -10,7 +10,7 @@ import java.util.Set;
 public interface AccountDao {
     void insertFlight(Account account, Connection con) throws SQLException;
     Set<Account>getAllAccount() throws  SQLException;
-    Account getAccountByBookNo(String bookNo);
+    Account getAccountAllReaderNo(String readerNo) throws SQLException; //所有的借阅记录
     Account getAccountByReaderNo(String readerNo);
     void updateAccount(Account account);
 

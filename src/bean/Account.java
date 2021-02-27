@@ -46,4 +46,14 @@ public class Account {
     public void setReturnTime(String returnTime) {
         this.returnTime = returnTime;
     }
+
+    @Override
+    public String toString() {
+        return "借阅记录{" +
+                "图书编号='" + bookNo + '\'' +
+                ", 读者编号='" + readerNo + '\'' +
+                ", 借阅时间='" + loanTime + '\'' +
+                ", 归还时间='" + returnTime + '\'' +
+                '}';
+    }
 }

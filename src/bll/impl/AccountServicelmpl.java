@@ -18,6 +18,7 @@ public class AccountServicelmpl implements AccountService {
    AccountDao accountDao;
    LogDao logDao;
 
+   //构造函数
     public AccountServicelmpl(){
         accountDao = new AccountDaolml();
         logDao = new LogDaolmpl();
@@ -25,7 +26,8 @@ public class AccountServicelmpl implements AccountService {
 
 
     public void insertAccount(Account account) {
-        Connection conn = null;
+        System.out.println(account);
+        /*Connection conn = null;
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String uri="jdbc:sqlserver://localhost:1433;integratedSecurity=true;DatabaseName=library";
@@ -36,7 +38,7 @@ public class AccountServicelmpl implements AccountService {
             Statement st = conn.createStatement();
             String sql = "select * from book";
             ResultSet rs = st.executeQuery(sql);
-            System.out.println(rs);
+            System.out.println(rs.next());
 
 
             conn.setAutoCommit(false);
@@ -44,7 +46,7 @@ public class AccountServicelmpl implements AccountService {
         }
         catch(Exception e){
             System.out.println(e);
-        }
+        }*/
 
 
     }
@@ -55,13 +57,13 @@ public class AccountServicelmpl implements AccountService {
     }
 
     @Override
-    public Account getAccountByBookNo(String bookNo) {
+    public Account getAccountAllReaderNo(String readerNo) {
         return null;
     }
 
     @Override
     public Account getAccountByReaderNo(String readerNo) {
-        return null;
+        return accountDao.getAccountByReaderNo(readerNo);
     }
 
     @Override
